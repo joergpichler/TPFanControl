@@ -39,7 +39,7 @@
 #define EC_CTRLPORT_QUERY	 (char)0x84
 
 
-int verbosity= 0;	// verbosity for the logbuf (0= nothing)
+int verbosity= 1;	// verbosity for the logbuf (0= nothing)
 char lasterrorstring[256]= "",
 logbuf[8192]= "";
 
@@ -89,7 +89,12 @@ if ( !(data & EC_STAT_OBF) ) {
 
 *pdata = ReadPort(EC_DATAPORT);
 
-if (verbosity>0) sprintf(logbuf+strlen(logbuf), "readec: offset= %x, data= %02x\n", offset, *pdata);
+if (verbosity > 0) {
+	char* address = logbuf + strlen(logbuf);
+	sprintf(logbuf + strlen(logbuf), "readec: offset= %x, data= %02x\n", offset, *pdata);
+	// todo output to console
+	OutputDebugString(address);
+}
 
 return 1;
 }
